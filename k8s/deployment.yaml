@@ -21,28 +21,28 @@ spec:
         role: frontend
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.18-perl
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: http
-              containerPort: 80
-          volumeMounts:
-            - name: nginx-proxy-config
-              mountPath: /etc/nginx/conf.d/default.conf
-              subPath: nginx.conf
-        - name: flask
-          image: rgupta2165/flaskapp:develop-v1.6.0
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: http
-              containerPort: 5000
-          env:
-            - name: APP_NAME
-              value: CloudAcademy.K8s.GitOps
-            - name: APP_VERSION
-              value: v1.0.4
-      volumes:
+      - name: nginx
+        image: nginx:1.18-alpine-perl
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
         - name: nginx-proxy-config
-          configMap:
-            name: nginx-conf
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: nginx.conf
+      - name: flask
+        image: rgupta2165/flaskapp:develop-v1.6.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          containerPort: 5000
+        env:
+        - name: APP_NAME
+          value: CloudAcademy.K8s.GitOps
+        - name: APP_VERSION
+          value: v1.0.4
+      volumes:
+      - name: nginx-proxy-config
+        configMap:
+          name: nginx-conf
